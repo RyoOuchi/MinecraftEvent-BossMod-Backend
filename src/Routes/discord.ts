@@ -3,7 +3,6 @@ import { Router } from "express";
 export default function discordRouter(broadcast: (data: any) => void) {
   const router = Router();
 
-  // Example: /discord/summon-boss?teamName=Apollo
   router.get("/summon-boss", (req, res) => {
     const { teamName } = req.query;
     console.log(`🔥 Summon boss requested for team: ${teamName}`);
