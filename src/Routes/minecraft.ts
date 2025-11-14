@@ -1,10 +1,8 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 
-export default function minecraftRouter(prisma: PrismaClient, broadcast: (data: any) => void) {
+export default function minecraftRouter(prisma: PrismaClient) {
   const router = Router();
-
-  // --- Boss Spawned ---
   router.post("/spawned-boss", async (req, res) => {
     try {
       const { teamID, bossID } = req.body;
@@ -28,7 +26,6 @@ export default function minecraftRouter(prisma: PrismaClient, broadcast: (data: 
         },
       });
 
-      broadcast({ type: "BOSS_SPAWNED", teamID, bossID: parsedBossId });
       res.json({ success: true, team });
     } catch (error) {
       console.error("❌ Error in /minecraft/spawned-boss:", error);
@@ -36,7 +33,6 @@ export default function minecraftRouter(prisma: PrismaClient, broadcast: (data: 
     }
   });
 
-  // --- Boss Defeated ---
   router.post("/defeated-boss", async (req, res) => {
     try {
       const { teamID, bossID } = req.body;
@@ -60,7 +56,6 @@ export default function minecraftRouter(prisma: PrismaClient, broadcast: (data: 
         },
       });
 
-      broadcast({ type: "BOSS_DEFEATED", teamID, bossID: parsedBossId });
       res.json({ success: true, team });
     } catch (error) {
       console.error("❌ Error in /minecraft/defeated-boss:", error);

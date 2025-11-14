@@ -29,17 +29,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- HTTP + WS server ---
 const server = createServer(app);
 const { broadcast } = setupWebSocket(server);
 
-// --- Routers ---
 app.use("/discord", discordRouter(broadcast));
-app.use("/minecraft", minecraftRouter(prisma, broadcast));
+app.use("/minecraft", minecraftRouter(prisma));
 app.use("/debug", debugRouter(prisma));
 
-// --- Start ---
 const PORT = 3000;
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
