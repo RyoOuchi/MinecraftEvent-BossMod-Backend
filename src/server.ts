@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 const server = createServer(app);
 const { broadcast } = setupWebSocket(server);
 
+// Routes
 app.use("/discord", discordRouter(broadcast));
 app.use("/minecraft", minecraftRouter(prisma));
 app.use("/debug", debugRouter(prisma));
