@@ -24,13 +24,14 @@ export default function teamStatus(prisma) {
                     bossId: true
                 }
             });
+            console.log("");
             const bossesTeamFightingID = bossesTeamFighting.map(boss => boss.bossId);
             const bossesTeamDefeatedID = bossesTeamDefeated.map(boss => boss.bossId);
             const bossesCurrentlyFightingID = bossesTeamFightingID.filter((bossID) => {
-                !bossesTeamDefeatedID.includes(bossID);
+                return !bossesTeamDefeatedID.includes(bossID);
             });
             const response = bossesTeamFighting.filter((boss) => {
-                bossesCurrentlyFightingID.includes(boss.bossId);
+                return bossesCurrentlyFightingID.includes(boss.bossId);
             });
             res.status(200).json(response);
         }
@@ -68,11 +69,12 @@ export default function teamStatus(prisma) {
             const resultMap = new Map();
             defeatedMap.forEach((date, id) => {
                 const summonedTime = summonedMap.get(id)?.getTime();
+                console.log("Summoned Time: " + summonedTime);
                 if (summonedTime != undefined) {
-                    resultMap.set(id, summonedTime - date.getTime());
+                    resultMap.set(id, date.getTime() - summonedTime);
                 }
             });
-            res.status(200).json(resultMap);
+            res.status(200).json(Object.fromEntries(resultMap));
         }
         catch (error) {
             res.status(500).send(error);
