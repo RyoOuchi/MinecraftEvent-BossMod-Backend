@@ -6,6 +6,7 @@ import { setupWebSocket } from "./ws/websocket.js";
 import discordRouter from "./Routes/discord.js";
 import minecraftRouter from "./Routes/minecraft.js";
 import debugRouter from "./Routes/debug.js";
+import displayRouter from "./Routes/display.js";
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json());
@@ -25,11 +26,13 @@ app.use((req, res, next) => {
 });
 const server = createServer(app);
 const { broadcast } = setupWebSocket(server);
+// Routes
 app.use("/discord", discordRouter(broadcast));
 app.use("/minecraft", minecraftRouter(prisma));
 app.use("/debug", debugRouter(prisma));
+app.use("/display", displayRouter(prisma));
 const PORT = 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 //# sourceMappingURL=server.js.map

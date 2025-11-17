@@ -19,9 +19,9 @@ export default function debugRouter(prisma) {
     router.delete("/reset-db", async (_req, res) => {
         console.log("🗑️ Resetting DB...");
         try {
-            await prisma.player.deleteMany();
-            await prisma.team.deleteMany();
-            console.log("✅ DB cleared");
+            await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Player" RESTART IDENTITY CASCADE;`);
+            await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Team" RESTART IDENTITY CASCADE;`);
+            console.log("✅ DB cleared & IDs reset");
             res.json({ success: true, message: "Database reset complete" });
         }
         catch (error) {
